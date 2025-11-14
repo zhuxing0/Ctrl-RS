@@ -1,4 +1,4 @@
-# Simulate Any Radar: Attribute-Controllable Radar Simulation via Waveform Parameter Embedding
+# Controllable Radar Simulation with Waveform Parameter Embedding
 
 <div align="center">
 <a href="https://arxiv.org/abs/2506.03134">
@@ -9,7 +9,7 @@
 </a>
 </div>
 
-This repo contains the official code of our paper: [Simulate Any Radar: Attribute-Controllable Radar Simulation via Waveform Parameter Embedding](https://arxiv.org/abs/2506.03134).
+This repo contains the official code of our paper: [Controllable Radar Simulation with Waveform Parameter Embedding](https://arxiv.org/abs/2506.03134).
 
 > Authors: [Weiqing Xiao](https://scholar.google.com.hk/citations?user=v0iwkScAAAAJ&hl=en&oi=sra)<sup>\*</sup>, [Hao Huang](https://github.com/HaoHuang2003)<sup>\*</sup>, [Chonghao Zhong](https://github.com/zchnanguan7)<sup>\*</sup>, Yujie Lin, [Nan Wang](https://bigcileng.github.io/), [Xiaoxue Chen](https://scholar.google.com.hk/citations?hl=en&user=_tz64W0AAAAJ), [Zhaoxi Chen](https://scholar.google.com.hk/citations?hl=en&user=HsV0WbwAAAAJ), [Saining Zhang](https://scholar.google.com.hk/citations?hl=en&user=P4efBMcAAAAJ), [Shuocheng Yang](https://scholar.google.com.hk/citations?hl=en&user=XISZWXgAAAAJ), [Pierre Merriaux](https://scholar.google.com.hk/citations?hl=en&user=NMSccqAAAAAJ), Lei Lei, [Hao Zhao](https://sites.google.com/view/fromandto/)<sup>†</sup>  
 
