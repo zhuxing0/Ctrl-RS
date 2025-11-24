@@ -1,4 +1,4 @@
-# Controllable Radar Simulation with Waveform Parameter Embedding
+# Simulate Any Radar: Attribute-Controllable Radar Simulation via Waveform Parameter Embedding
 
 <div align="center">
 <a href="https://arxiv.org/abs/2506.03134">
@@ -9,7 +9,7 @@
 </a>
 </div>
 
-This repo contains the official code of our paper: [Controllable Radar Simulation with Waveform Parameter Embedding](https://arxiv.org/abs/2506.03134).
+This repo contains the official code of our paper: [Simulate Any Radar: Attribute-Controllable Radar Simulation via Waveform Parameter Embedding](https://arxiv.org/abs/2506.03134).
 
 > Authors: [Weiqing Xiao](https://scholar.google.com.hk/citations?user=v0iwkScAAAAJ&hl=en&oi=sra)<sup>\*</sup>, [Hao Huang](https://github.com/HaoHuang2003)<sup>\*</sup>, [Chonghao Zhong](https://github.com/zchnanguan7)<sup>\*</sup>, Yujie Lin, [Nan Wang](https://bigcileng.github.io/), [Xiaoxue Chen](https://scholar.google.com.hk/citations?hl=en&user=_tz64W0AAAAJ), [Zhaoxi Chen](https://scholar.google.com.hk/citations?hl=en&user=HsV0WbwAAAAJ), [Saining Zhang](https://scholar.google.com.hk/citations?hl=en&user=P4efBMcAAAAJ), [Shuocheng Yang](https://scholar.google.com.hk/citations?hl=en&user=XISZWXgAAAAJ), [Pierre Merriaux](https://scholar.google.com.hk/citations?hl=en&user=NMSccqAAAAAJ), Lei Lei, [Hao Zhao](https://sites.google.com/view/fromandto/)<sup>†</sup>  
 
@@ -21,13 +21,17 @@ This repo contains the official code of our paper: [Controllable Radar Simulatio
 
 - June 1, 2025: Release project page.
 
+# 📝 TODO List
+
+- [ ] Release `Camera-based pipeline`.
+
 ## 📊 Overview
 
 <p align="center">
   <img src="assets/radartop_00.png" alt="Overview" width="100%"/>
 </p>
 
-(a) SA-Radar enables controllable and realistic radar simulation by conditioning on
+(a) SA-Radar (i.e., Ctrl-RS) enables controllable and realistic radar simulation by conditioning on
 customizable radar attributes. It supports flexible scene editing such as attribute modification, actor
 removal, and novel trajectories. (b) SA-Radar improves performance on various tasks including
 semantic segmentation, 2D/3D object detection. In all settings, SA-Radar’s synthetic data either
@@ -76,50 +80,40 @@ pip install numpy==1.26.4
 
 ### Dataset Preparation
 
-Please keep the same directory tree as shown in [RADDet dataset](https://github.com/ZhangAoCanada/RADDet?tab=readme-ov-file#DatasetLink) and [Carrada dataset](https://github.com/valeoai/carrada_dataset).
+Please keep the same directory tree as shown in [RADDet dataset](https://github.com/ZhangAoCanada/RADDet?tab=readme-ov-file#DatasetLink).
 
-Download the datasets and arrange them as the folloing directory tree,
+Download the dataset and arrange it as the folloing directory tree,
 ```bash
-|-- RADDet
-	|-- train
-		|-- RAD
-			|-- part1
-				|-- ******.npy
-				|-- ******.npy
-		|-- gt
-			|-- part1
-				|-- ******.pickle
-				|-- ******.pickle
-		|-- stereo_image
-			|-- part1
-				|-- ******.jpg
-				|-- ******.jpg
-	|-- test
-		|-- RAD
-			|-- ***
-		|-- gt
-			|-- ***
-		|-- stereo_image
-			|-- ***
-|-- Carrada
-	|-- Carrada
-		|-- data_seq_ref.json
-		|-- 2019-09-16-12-52-12
-			|-- annotations/box/range_angle_light.json
-			|-- annotations/box/range_doppler_light.json
-		|-- 2019-09-16-12-55-51
-			|-- annotations/box/range_angle_light.json
-			|-- annotations/box/range_doppler_light.json
-		|-- ***
-	|-- datasets_master
-		|-- Carrada_RAD
-			|-- 2019-09-16-12-52-12
-				|-- RAD_numpy
-					|-- 000000.npy
-					|-- 000001.npy
-					|-- ***
-			|-- 2019-09-16-12-55-51
-			|-- ***
+|-- train
+	|-- RAD
+		|-- part1
+			|-- ******.npy
+			|-- ******.npy
+		|-- part2
+			|-- ******.npy
+			|-- ******.npy
+	|-- gt
+		|-- part1
+			|-- ******.pickle
+			|-- ******.pickle
+		|-- part2
+			|-- ******.pickle
+			|-- ******.pickle
+	|-- stereo_image
+		|-- part1
+			|-- ******.jpg
+			|-- ******.jpg
+		|-- part2
+			|-- ******.jpg
+			|-- ******.jpg
+|-- test
+	|-- RAD
+		|-- part1
+            |-- ***
+	|-- gt
+		|-- part1
+            |-- ***
+	|-- ***
 ```
 
 ### Evaluate the pre-train models
@@ -182,34 +176,23 @@ python demo.py --restore_ckpt ./models/icfar-net.pth --save_numpy --version trai
 
 We provide pre-trained weights of the models on different downstream tasks in the [downstream_ckps](downstream_ckps) folder, including real-data-trained, simulated-data-trained, and co-trained versions.
 
-#### Running a Pre-trained Model and Training Your Downstream Model
-
-After running `demo.py`, the generated simulation data is saved to the `./sim_output` folder (set via *--output_directory*). The simulation data format is identical to the RADDet dataset, which you can use to train your downstream model.
-
-For 3D detection, copy `./downstream_ckps/RADDet_Pytorch/*` files and the checkpoints from `./downstream_ckps/3d-det` folder into [RADDet_Pytorch](https://github.com/auroua/RADDet_Pytorch) and run:
+#### Running a Pre-trained Model
+For 3D detection, copy the checkpoints from `./downstream_ckps/3d-det` folder into [RADDet_Pytorch](https://github.com/auroua/RADDet_Pytorch) and run:
 ```python
-# Running a Pre-trained Model with a RAD head on RADDet or Carrada
-python validate_SA_Radar.py --dataset RADDET --config_dir ./configs/config_simraddet_1000e_final.json --resume_from {RAD_ckp_path}
-python validate_SA_Radar.py --dataset CARRADA --config_dir ./configs/config_simcarrada_1000e_final.json --resume_from {RAD_ckp_path}
-
-# Training Your Model with a RAD head on RADDet or Carrada
-python train_SA_Radar.py --dataset RADDET --config_dir ./configs/config_simraddet_1000e_final.json --add_train_dir {sim_data_path}(optional)
-python train_SA_Radar.py --dataset CARRADA --config_dir ./configs/config_simcarrada_1000e_final.json --add_train_dir {sim_data_path}(optional)
-
-# Running a Pre-trained Model with a RA head on RADDet or Carrada (To be uploaded)
-python validate_cart_SA_Radar.py --dataset RADDET --config_dir ./configs/config_simraddet_1000e_final.json --resume_from {RA_ckp_path}
-python validate_cart_SA_Radar.py --dataset CARRADA --config_dir ./configs/config_simcarrada_1000e_final.json --resume_from {RA_ckp_path}
-
-# Training Your Model with a RA head on RADDet or Carrada (To be uploaded)
-python train_cart_SA_Radar.py --dataset RADDET --config_dir ./configs/config_simraddet_1000e_final.json --backbone_resume_from {RAD_ckp_path} --add_train_dir {sim_data_path}(optional)
-python train_cart_SA_Radar.py  --dataset CARRADA --config_dir ./configs/config_simcarrada_1000e_final.json --backbone_resume_from {RAD_ckp_path} --add_train_dir {sim_data_path}(optional)
-
+# RAD head
+python validate.py --config_dir ./configs/config.json --resume_from {model.pth}
+or
+# RA head
+python validate_cart.py --config_dir ./configs/config.json --resume_from {model.pth}
 ```
 
 For 2D detection (RD), copy the config and checkpoint files from `./downstream_ckps/2d-det (RTMDet Model on mmdet)` folder into [mmdetection](https://github.com/open-mmlab/mmdetection), and run:
 ```python
 python tools/test.py --config configs/{config.py} --checkpoint work_dirs/{model.pth}
 ```
+
+#### Training Your Downstream Model
+After running `demo.py`, the generated simulation data is saved to the `./sim_output` folder (set via *--output_directory*). The simulation data format is identical to the RADDet dataset, which you can use to train your downstream model.
 
 # 🤝 Citation
 
