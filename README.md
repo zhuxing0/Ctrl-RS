@@ -1,4 +1,4 @@
-# Simulate Any Radar: Attribute-Controllable Radar Simulation via Waveform Parameter Embedding
+# Controllable Radar Simulation with Waveform Parameter Embedding
 
 <div align="center">
 <a href="https://arxiv.org/abs/2506.03134">
