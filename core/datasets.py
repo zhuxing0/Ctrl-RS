@@ -47,6 +47,7 @@ def compute_the_Attribute(sigma_r_bias, N_list_bias, num_log_a_bias, g_bias=1.0)
     return sigma, g, Rs, lambda_
 
 def extract_local_maxima(img):
+    # extract scene reflection points and noise reflection points
     output = np.zeros_like(img)
     neighborhood = maximum_filter(img, size=3)
     local_max = (img == neighborhood)
